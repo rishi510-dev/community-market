@@ -234,11 +234,24 @@
         }
 
         async function deleteItem(id) {
-            if (confirm("Delete this listing?")) {
-                await supabaseClient.from('listings').delete().eq(id);
-                fetchListings(); setTimeout(renderMyListings, 500);
-            }
+    if (confirm("Permanently delete this listing?")) {
+        // FIXED: Added 'id' as the column name to match against
+        const { error } = await supabaseClient
+            .from('listings')
+            .delete()
+            .eq('id', id); 
+
+        if (error) {
+            console.error("Delete failed:", error);
+            return alert("Delete failed! Did you set the Supabase Policy?");
         }
+
+        // Wait for fresh data before refreshing the screen
+        await fetchListings(); 
+        renderMyListings(); 
+        alert("Item removed!");
+    }
+}
 
         function saveProfile() {
             const name = document.getElementById('setupName').value;
