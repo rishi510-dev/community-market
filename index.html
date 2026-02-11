@@ -10,9 +10,8 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); }
-        input[type="number"]::-webkit-inner-spin-button, 
-        input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); }
+        input::-webkit-inner-spin-button { display: none; }
     </style>
 </head>
 <body class="bg-[#f8fafc] text-slate-900 font-sans">
@@ -20,79 +19,80 @@
     <nav class="sticky top-0 z-40 glass border-b border-slate-200 px-6 py-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div class="flex items-center gap-2">
-                <div class="bg-indigo-600 p-2 rounded-lg shadow-indigo-200 shadow-lg"><i data-lucide="home" class="w-5 h-5 text-white"></i></div>
-                <h1 class="text-xl font-extrabold tracking-tight text-slate-800">OurCommunity</h1>
+                <div class="bg-indigo-600 p-2 rounded-xl shadow-lg shadow-indigo-200">
+                    <i data-lucide="home" class="w-5 h-5 text-white"></i>
+                </div>
+                <h1 class="text-xl font-black tracking-tight text-slate-800">OurCommunity</h1>
             </div>
             
-            <div class="flex items-center gap-2 sm:gap-4">
-                <button onclick="toggleSettings()" class="p-2.5 hover:bg-slate-100 rounded-full transition-all text-slate-600">
-                    <i data-lucide="settings" class="w-6 h-6"></i>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSettings()" class="p-2.5 hover:bg-white rounded-full transition-all border border-transparent hover:border-slate-200 text-slate-600">
+                    <i data-lucide="user" class="w-6 h-6"></i>
                 </button>
-                <button onclick="openSellModal()" class="bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 shadow-xl hover:bg-indigo-600 transition-all">
-                    <i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden xs:inline">Sell</span>
+                <button onclick="openSellModal()" class="bg-slate-900 text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 hover:bg-indigo-600 transition-all shadow-xl">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Sell
                 </button>
             </div>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-8">
-        <div class="flex flex-col md:flex-row gap-4 mb-8">
+        <div class="flex flex-col md:flex-row gap-4 mb-10">
             <div class="flex-1 relative">
                 <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5"></i>
                 <input type="text" id="searchInput" oninput="filterListings()" placeholder="Search items in your community..." 
-                    class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm transition-all">
+                    class="w-full pl-12 pr-6 py-4 bg-white border-none rounded-3xl shadow-lg shadow-slate-200/50 outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
             </div>
-            <div class="flex gap-2">
-                <select id="priceFilter" onchange="filterListings()" class="px-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-bold outline-none shadow-sm cursor-pointer">
-                    <option value="all">Any Price</option>
-                    <option value="500">Under ₹500</option>
-                    <option value="2000">Under ₹2000</option>
-                    <option value="5000">Under ₹5000</option>
-                </select>
-            </div>
+            <select id="priceFilter" onchange="filterListings()" class="px-6 py-4 bg-white border-none rounded-3xl text-sm font-black shadow-lg shadow-slate-200/50 outline-none cursor-pointer">
+                <option value="all">Any Price</option>
+                <option value="500">Under ₹500</option>
+                <option value="2000">Under ₹2000</option>
+                <option value="5000">Under ₹5000</option>
+            </select>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid">
             <div class="col-span-full py-20 text-center text-slate-400 animate-pulse">
                 <i data-lucide="refresh-cw" class="w-10 h-10 mx-auto mb-4 animate-spin"></i>
-                <p class="font-medium">Syncing neighbor listings...</p>
+                <p class="font-bold">Updating neighborhood market...</p>
             </div>
         </div>
     </main>
 
     <div id="setupModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4">
-        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl text-center">
+        <div class="bg-white w-full max-w-md rounded-[3rem] p-10 shadow-2xl text-center">
             <div class="bg-indigo-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <i data-lucide="user-plus" class="w-10 h-10 text-indigo-600"></i>
+                <i data-lucide="user-check" class="w-10 h-10 text-indigo-600"></i>
             </div>
-            <h2 class="text-3xl font-black mb-2">Join the Community</h2>
-            <p class="text-slate-500 mb-8">Save your details once to start buying and selling with neighbors.</p>
+            <h2 class="text-3xl font-black mb-2 text-slate-800">Hi, Neighbor! 👋</h2>
+            <p class="text-slate-500 mb-8 font-medium">Identify yourself to start buying and selling in your apartment community.</p>
             <div class="space-y-4">
-                <input type="text" id="setupName" placeholder="Your Name" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 text-center font-semibold">
-                <input type="text" id="setupPhone" placeholder="WhatsApp (e.g. 9876543210)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 text-center font-semibold">
-                <input type="text" id="setupFlat" placeholder="Flat Number / Block" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 text-center font-semibold">
-                <button onclick="saveUserProfile()" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold text-lg hover:bg-indigo-700 shadow-xl shadow-indigo-200 transition-all">Continue</button>
+                <input type="text" id="setupName" placeholder="Full Name" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-center">
+                <input type="text" id="setupPhone" placeholder="WhatsApp (10 Digits)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-center">
+                <input type="text" id="setupFlat" placeholder="Flat / Block (e.g. C-102)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-bold text-center">
+                <button onclick="saveProfile()" class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-lg shadow-xl shadow-indigo-200 hover:bg-indigo-700 transition-all">Start Trading</button>
             </div>
         </div>
     </div>
 
-    <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-        <div class="bg-white w-full max-w-2xl rounded-[2.5rem] p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-extrabold">My Marketplace</h2>
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-end bg-slate-900/40 backdrop-blur-sm">
+        <div class="bg-white h-full w-full max-w-md p-8 shadow-2xl overflow-y-auto">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-black">My Profile</h2>
                 <button onclick="toggleSettings()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x"></i></button>
             </div>
-            
-            <div class="bg-indigo-50 p-6 rounded-[2rem] mb-8 border border-indigo-100 flex justify-between items-center">
-                <div>
-                    <h3 id="profileDisplay" class="font-black text-xl text-indigo-900"></h3>
-                    <p id="flatDisplay" class="text-indigo-600 font-bold"></p>
-                </div>
-                <button onclick="clearProfile()" class="text-red-500 bg-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:bg-red-50">Reset Info</button>
+
+            <div class="bg-slate-900 text-white p-8 rounded-[2.5rem] mb-10 shadow-2xl shadow-indigo-100 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 bg-indigo-500 w-24 h-24 rounded-full opacity-20"></div>
+                <h3 id="profileNameDisplay" class="text-2xl font-black mb-1"></h3>
+                <p id="profileMetaDisplay" class="text-slate-400 font-bold text-sm"></p>
+                <button onclick="resetProfile()" class="mt-6 text-xs font-bold text-red-400 hover:text-red-300 underline underline-offset-4">Reset Info</button>
             </div>
 
-            <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i data-lucide="layout-grid" class="w-5 h-5"></i> My Active Items</h3>
-            <div id="my-listings-grid" class="space-y-4">
+            <h3 class="font-black text-lg mb-4 flex items-center gap-2">
+                <i data-lucide="package" class="w-5 h-5 text-indigo-600"></i> Your Items
+            </h3>
+            <div id="my-listings-container" class="space-y-4">
                 </div>
         </div>
     </div>
@@ -100,31 +100,24 @@
     <div id="sellModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
         <div class="bg-white w-full max-w-lg rounded-[2.5rem] p-8 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold">List an Item</h2>
+                <h2 class="text-2xl font-black">List New Item</h2>
                 <button onclick="toggleSellModal()" class="p-2 hover:bg-slate-100 rounded-full"><i data-lucide="x"></i></button>
             </div>
             <form id="listingForm" class="space-y-4">
-                <input type="text" id="itemTitle" required placeholder="What are you selling?" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-semibold">
-                <div class="grid grid-cols-2 gap-4">
-                    <input type="number" id="itemPrice" required placeholder="Price (₹)" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-semibold">
-                    <select id="itemCategory" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500 font-semibold">
-                        <option>Household</option><option>Electronics</option><option>Books</option><option>Fitness</option><option>Other</option>
-                    </select>
-                </div>
-
-                <div class="border-2 border-dashed border-slate-200 rounded-3xl p-8 text-center hover:border-indigo-400 bg-slate-50 transition-colors">
+                <input type="text" id="itemTitle" required placeholder="What are you selling?" class="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold focus:ring-2 focus:ring-indigo-500">
+                <input type="number" id="itemPrice" required placeholder="Price (₹)" class="w-full p-4 bg-slate-50 rounded-2xl outline-none font-bold focus:ring-2 focus:ring-indigo-500">
+                
+                <div class="border-2 border-dashed border-slate-200 rounded-[2rem] p-8 text-center bg-slate-50 hover:border-indigo-400 transition-colors">
                     <label class="cursor-pointer block">
-                        <i data-lucide="image-plus" class="w-10 h-10 mx-auto text-slate-400 mb-2"></i>
-                        <span class="text-sm text-slate-500 font-bold">Click to add photo</span>
-                        <input type="file" id="itemFile" accept="image/*" class="hidden" onchange="previewImage(this)">
+                        <i data-lucide="camera" class="w-8 h-8 mx-auto text-slate-400 mb-2"></i>
+                        <span class="text-sm text-slate-500 font-black">Add Item Photo</span>
+                        <input type="file" id="itemFile" accept="image/*" class="hidden" onchange="handlePreview(this)">
                     </label>
-                    <div id="imgPreview" class="hidden mt-4 h-40 w-full rounded-2xl bg-cover bg-center border border-slate-200"></div>
+                    <div id="previewContainer" class="hidden mt-4 h-48 w-full rounded-2xl bg-cover bg-center border border-slate-200"></div>
                 </div>
 
-                <textarea id="itemDesc" rows="2" placeholder="Tell neighbors about the condition..." class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-
-                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold text-xl hover:bg-indigo-700 shadow-xl shadow-indigo-200 transition-all flex justify-center items-center gap-2">
-                    Post My Item
+                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-indigo-700 transition-all flex justify-center items-center gap-2">
+                    Post My Listing
                 </button>
             </form>
         </div>
@@ -136,10 +129,11 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let allListings = [];
-        let userProfile = JSON.parse(localStorage.getItem('neighbor_profile'));
+        let profile = JSON.parse(localStorage.getItem('neighbor_profile'));
 
+        // INITIALIZE APP
         window.onload = () => {
-            if (!userProfile) document.getElementById('setupModal').classList.remove('hidden');
+            if (!profile) document.getElementById('setupModal').classList.remove('hidden');
             fetchListings();
             lucide.createIcons();
         };
@@ -148,46 +142,67 @@
             const { data, error } = await supabaseClient.from('listings').select('*').order('created_at', { ascending: false });
             if (error) return console.error(error);
             allListings = data;
-            renderGrid(allListings);
+            renderAll(allListings);
         }
 
-        function filterListings() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const maxPrice = document.getElementById('priceFilter').value;
+        // SIGN UP LOGIC
+        function saveProfile() {
+            const name = document.getElementById('setupName').value;
+            const phone = document.getElementById('setupPhone').value;
+            const flat = document.getElementById('setupFlat').value;
+            if (!name || !phone || !flat) return alert("Please fill all details!");
+            
+            profile = { name, phone, flat };
+            localStorage.setItem('neighbor_profile', JSON.stringify(profile));
+            document.getElementById('setupModal').classList.add('hidden');
+        }
 
-            let filtered = allListings.filter(i => {
-                const matchesSearch = i.title.toLowerCase().includes(query) || i.description?.toLowerCase().includes(query);
-                const matchesPrice = (maxPrice === 'all' || parseFloat(i.price) <= parseFloat(maxPrice));
-                return matchesSearch && matchesPrice;
+        // ISOLATED LISTINGS LOGIC (IN SETTINGS)
+        function renderMyListings() {
+            const container = document.getElementById('my-listings-container');
+            const myItems = allListings.filter(item => item.phone === profile.phone);
+            
+            container.innerHTML = myItems.length ? '' : '<p class="text-slate-400 italic text-sm py-4">You haven\'t posted any items yet.</p>';
+
+            myItems.forEach(item => {
+                container.innerHTML += `
+                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-3xl border border-slate-100 group">
+                        <img src="${item.image_url}" class="w-16 h-16 rounded-2xl object-cover border border-slate-200">
+                        <div class="flex-1">
+                            <h4 class="font-black text-slate-800 text-sm">${item.title}</h4>
+                            <p class="text-indigo-600 font-black text-xs">₹${item.price}</p>
+                        </div>
+                        <button onclick="deleteItem(${item.id})" class="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </div>`;
             });
-            renderGrid(filtered);
+            lucide.createIcons();
         }
 
-        function renderGrid(items) {
+        // MAIN GRID LOGIC
+        function renderAll(items) {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold">Nothing found! Try a different search.</p>';
+            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold">No active listings in the building.</p>';
             
             items.forEach(item => {
-                let phone = (item.phone || "").replace(/\D/g, '');
-                if (phone.length === 10) phone = '91' + phone;
-                
                 grid.innerHTML += `
-                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-sm hover:shadow-2xl transition-all group">
+                    <div class="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 shadow-sm hover:shadow-2xl transition-all group">
                         <div class="h-64 overflow-hidden relative">
-                            <span class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase z-10">${item.category}</span>
+                            <span class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest text-slate-800 z-10">FLAT ${item.flat_number}</span>
                             <img src="${item.image_url}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         </div>
-                        <div class="p-6">
-                            <div class="flex justify-between items-start mb-2">
-                                <h3 class="font-bold text-lg text-slate-800 line-clamp-1">${item.title}</h3>
-                                <p class="text-indigo-600 font-black text-xl">₹${item.price}</p>
+                        <div class="p-7">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="font-black text-xl text-slate-800 mb-1">${item.title}</h3>
+                                    <p class="text-slate-400 text-xs font-bold flex items-center gap-1"><i data-lucide="user" class="w-3 h-3"></i> ${item.user_name || 'Resident'}</p>
+                                </div>
+                                <p class="text-indigo-600 font-black text-2xl">₹${item.price}</p>
                             </div>
-                            <div class="flex items-center gap-1 text-slate-400 text-xs mb-6 font-bold">
-                                <i data-lucide="map-pin" class="w-3 h-3"></i> <span>Flat ${item.flat_number || 'Resident'}</span>
-                            </div>
-                            <a href="https://wa.me/${phone}?text=Hi, I want to buy your ${item.title} from OurCommunity" target="_blank" 
-                                class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-indigo-600 transition-all shadow-lg active:scale-95">
-                                <i data-lucide="message-circle" class="w-5 h-5"></i> Chat with Neighbor
+                            <a href="https://wa.me/91${item.phone}?text=Hi, I want to buy your ${item.title} from OurCommunity" target="_blank" 
+                                class="w-full py-4 bg-slate-900 text-white rounded-[1.25rem] font-black flex items-center justify-center gap-2 hover:bg-indigo-600 transition-all shadow-lg active:scale-95">
+                                <i data-lucide="message-circle" class="w-5 h-5"></i> Chat with Seller
                             </a>
                         </div>
                     </div>`;
@@ -195,81 +210,77 @@
             lucide.createIcons();
         }
 
-        function saveUserProfile() {
-            const name = document.getElementById('setupName').value;
-            const phone = document.getElementById('setupPhone').value;
-            const flat = document.getElementById('setupFlat').value;
-            if (!name || !phone || !flat) return alert("All fields are required!");
-            
-            userProfile = { name, phone, flat };
-            localStorage.setItem('neighbor_profile', JSON.stringify(userProfile));
-            document.getElementById('setupModal').classList.add('hidden');
-        }
-
+        // POSTING LOGIC
         async function handlePost() {
             const btn = document.getElementById('postBtn');
             const file = document.getElementById('itemFile').files[0];
-            if (!file) return alert("Please upload a photo of the item!");
+            if (!file) return alert("Upload a photo first!");
 
-            btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-5 h-5"></i> Posting...';
-            btn.disabled = true;
+            btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-6 h-6"></i> Posting...';
+            lucide.createIcons();
 
             const fileName = `${Date.now()}-${file.name}`;
-            const { data: uploadData, error: uploadError } = await supabaseClient.storage.from('listing-images').upload(fileName, file);
-            if (uploadError) {
-                alert("Upload failed! Check your internet.");
-                btn.innerHTML = 'Post My Item'; btn.disabled = false;
-                return;
-            }
-
+            await supabaseClient.storage.from('listing-images').upload(fileName, file);
             const { data: urlData } = supabaseClient.storage.from('listing-images').getPublicUrl(fileName);
-            
+
             await supabaseClient.from('listings').insert([{
                 title: document.getElementById('itemTitle').value,
                 price: document.getElementById('itemPrice').value,
-                category: document.getElementById('itemCategory').value,
-                description: document.getElementById('itemDesc').value,
-                phone: userProfile.phone,
-                flat_number: userProfile.flat,
+                user_name: profile.name,
+                phone: profile.phone,
+                flat_number: profile.flat,
                 image_url: urlData.publicUrl
             }]);
 
             toggleSellModal();
-            document.getElementById('listingForm').reset();
-            document.getElementById('imgPreview').classList.add('hidden');
             fetchListings();
-            btn.innerHTML = 'Post My Item'; btn.disabled = false;
+            btn.disabled = false; btn.innerHTML = 'Post My Listing';
+        }
+
+        // UTILITIES
+        async function deleteItem(id) {
+            if (confirm("Permanently remove this listing?")) {
+                await supabaseClient.from('listings').delete().eq('id', id);
+                fetchListings();
+                setTimeout(renderMyListings, 500);
+            }
+        }
+
+        function filterListings() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const max = document.getElementById('priceFilter').value;
+            const filtered = allListings.filter(i => 
+                (i.title.toLowerCase().includes(q)) && 
+                (max === 'all' || parseFloat(i.price) <= parseFloat(max))
+            );
+            renderAll(filtered);
         }
 
         function toggleSettings() {
             const modal = document.getElementById('settingsModal');
             modal.classList.toggle('hidden');
             if (!modal.classList.contains('hidden')) {
-                document.getElementById('profileDisplay').innerText = userProfile.name;
-                document.getElementById('flatDisplay').innerText = "Flat " + userProfile.flat + " • " + userProfile.phone;
+                document.getElementById('profileNameDisplay').innerText = profile.name;
+                document.getElementById('profileMetaDisplay').innerText = `Flat ${profile.flat} • ${profile.phone}`;
                 renderMyListings();
             }
         }
 
-        function renderMyListings() {
-            const container = document.getElementById('my-listings-grid');
-            const myItems = allListings.filter(i => i.phone === userProfile.phone);
-            container.innerHTML = myItems.length ? '' : '<div class="py-10 text-center text-slate-400">You haven\'t posted anything yet.</div>';
-            
-            myItems.forEach(item => {
-                container.innerHTML += `
-                    <div class="flex items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                        <img src="${item.image_url}" class="w-16 h-16 rounded-xl object-cover">
-                        <div class="flex-1">
-                            <h4 class="font-bold text-slate-800">${item.title}</h4>
-                            <p class="text-indigo-600 text-sm font-black">₹${item.price}</p>
-                        </div>
-                        <button onclick="deleteItem(${item.id})" class="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
-                    </div>`;
-            });
-            lucide.createIcons();
+        function handlePreview(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const prev = document.getElementById('previewContainer');
+                    prev.style.backgroundImage = `url(${e.target.result})`;
+                    prev.classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
-        async function deleteItem(id) {
-            if (confirm("Permanently delete this listing?")) {
-                await supabaseClient.from('listings').delete().eq
+        function openSellModal() { if (!profile) document.getElementById('setupModal').classList.remove('hidden'); else toggleSellModal(); }
+        function toggleSellModal() { document.getElementById('sellModal').classList.toggle('hidden'); }
+        function resetProfile() { if (confirm("Sign out and reset info?")) { localStorage.removeItem('neighbor_profile'); location.reload(); } }
+    </script>
+</body>
+</html>
