@@ -23,7 +23,6 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .glass { backdrop-filter: blur(24px); transition: all 0.4s ease; }
         .dark .glass { background: rgba(0, 0, 0, 0.7); border-color: rgba(255, 255, 255, 0.05); }
-        input::-webkit-inner-spin-button { display: none; }
         .scale-up { animation: scaleUp 0.3s ease-out; }
         @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
@@ -57,36 +56,55 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid"></div>
     </main>
 
+    <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-end bg-black/60 backdrop-blur-sm">
+        <div class="bg-white dark:bg-carbonGray h-full w-full max-w-md p-8 shadow-2xl border-l dark:border-deepBorder overflow-y-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">My Community Dashboard</h2>
+                <button onclick="toggleSettings()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-8">
+                <div class="bg-indigo-600 p-5 rounded-[2rem] text-white">
+                    <p class="text-[10px] font-black uppercase opacity-60 mb-1">Money Gained</p>
+                    <h4 id="statGained" class="text-2xl font-black">₹0</h4>
+                </div>
+                <div class="bg-slate-900 dark:bg-amoledBlack p-5 rounded-[2rem] text-white border dark:border-deepBorder">
+                    <p class="text-[10px] font-black uppercase opacity-60 mb-1">Money Put In</p>
+                    <h4 id="statSpent" class="text-2xl font-black">₹0</h4>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 dark:bg-amoledBlack p-6 rounded-[2.5rem] mb-8 border dark:border-deepBorder">
+                <h3 id="profileNameDisplay" class="text-xl font-black mb-1 italic dark:text-white"></h3>
+                <p id="profileMetaDisplay" class="text-slate-400 font-bold text-xs mb-4"></p>
+                <div class="flex gap-4">
+                    <button onclick="toggleTheme()" class="text-[10px] font-black uppercase text-indigo-600">Switch Theme</button>
+                    <button onclick="resetProfile()" class="text-[10px] font-black uppercase text-red-500">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="space-y-8">
+                <div>
+                    <h3 class="font-black text-sm uppercase tracking-widest mb-4 flex items-center gap-2 dark:text-white"><i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-600"></i> Purchase History</h3>
+                    <div id="purchases-container" class="space-y-3"></div>
+                </div>
+                <div>
+                    <h3 class="font-black text-sm uppercase tracking-widest mb-4 flex items-center gap-2 dark:text-white"><i data-lucide="tag" class="w-4 h-4 text-indigo-600"></i> My Listings & Sales</h3>
+                    <div id="my-listings-container" class="space-y-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="setupModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-xl p-4">
         <div class="bg-white dark:bg-carbonGray w-full max-w-md rounded-[3rem] p-10 shadow-2xl text-center scale-up border dark:border-deepBorder">
-            <h2 class="text-3xl font-black mb-2 dark:text-white italic uppercase tracking-tighter">Sign Up</h2>
+            <h2 class="text-3xl font-black mb-2 dark:text-white italic tracking-tighter uppercase">Sign Up</h2>
             <div class="space-y-4 mt-6">
                 <input type="text" id="setupName" placeholder="Full Name" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
                 <input type="text" id="setupPhone" placeholder="WhatsApp Number" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
                 <input type="text" id="setupFlat" placeholder="Flat No." class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
                 <button onclick="saveProfile()" class="w-full py-5 bg-indigo-600 text-white rounded-3xl font-black text-lg">Enter Marketplace</button>
             </div>
-        </div>
-    </div>
-
-    <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-end bg-black/60 backdrop-blur-sm">
-        <div class="bg-white dark:bg-carbonGray h-full w-full max-w-md p-8 shadow-2xl border-l dark:border-deepBorder overflow-y-auto">
-            <div class="flex justify-between items-center mb-10">
-                <h2 class="text-2xl font-black dark:text-white">My Account</h2>
-                <button onclick="toggleSettings()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
-            </div>
-
-            <div class="bg-slate-900 dark:bg-amoledBlack text-white p-8 rounded-[2.5rem] mb-10 border dark:border-deepBorder shadow-2xl">
-                <h3 id="profileNameDisplay" class="text-2xl font-black mb-1 italic"></h3>
-                <p id="profileMetaDisplay" class="text-slate-400 font-bold text-sm"></p>
-                <div class="mt-6 flex gap-4">
-                    <button onclick="toggleTheme()" class="text-xs font-bold text-indigo-400 underline">Theme</button>
-                    <button onclick="resetProfile()" class="text-xs font-bold text-red-500 underline">Log Out</button>
-                </div>
-            </div>
-
-            <h3 class="font-black text-lg mb-6 dark:text-white flex items-center gap-2"><i data-lucide="layout-grid" class="w-5 h-5"></i> My Listings</h3>
-            <div id="my-listings-container" class="space-y-4"></div>
         </div>
     </div>
 
@@ -97,17 +115,17 @@
                 <button onclick="toggleSellModal()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
             </div>
             <form id="listingForm" class="space-y-5">
-                <input type="text" id="itemTitle" required placeholder="Item Title" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
+                <input type="text" id="itemTitle" required placeholder="What is it?" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
                 <input type="number" id="itemPrice" required placeholder="Price (₹)" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
-                <div class="border-2 border-dashed border-slate-200 dark:border-deepBorder rounded-[2rem] p-10 text-center bg-slate-50 dark:bg-amoledBlack hover:border-indigo-600 transition-colors">
+                <div class="border-2 border-dashed border-slate-200 dark:border-deepBorder rounded-[2rem] p-10 text-center bg-slate-50 dark:bg-amoledBlack">
                     <label class="cursor-pointer block">
                         <i data-lucide="camera" class="w-10 h-10 mx-auto text-slate-400 mb-2"></i>
                         <span class="text-sm text-slate-500 font-black">Add Photo</span>
                         <input type="file" id="itemFile" accept="image/*" class="hidden" onchange="handlePreview(this)">
                     </label>
-                    <div id="previewContainer" class="hidden mt-4 h-56 w-full rounded-2xl bg-cover bg-center border border-slate-200 dark:border-deepBorder"></div>
+                    <div id="previewContainer" class="hidden mt-4 h-56 w-full rounded-2xl bg-cover bg-center border dark:border-deepBorder"></div>
                 </div>
-                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-[2rem] font-black text-xl shadow-xl">Post to Market</button>
+                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-[2rem] font-black text-xl">Post Listing</button>
             </form>
         </div>
     </div>
@@ -136,39 +154,40 @@
             if (error) return;
             allListings = data;
             renderAll(allListings);
+            if (!document.getElementById('settingsModal').classList.contains('hidden')) renderDashboard();
         }
 
         function renderAll(items) {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold">No items found.</p>';
+            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold uppercase tracking-widest text-xs italic">Market is empty...</p>';
             
             items.forEach(item => {
                 const isSold = item.is_sold;
                 const interestedList = item.interested_names ? item.interested_names.split(', ') : [];
-                const amIInterested = interestedList.includes(profile?.name);
+                const amIInterested = interestedList.some(entry => entry.includes(profile?.phone));
                 
                 grid.innerHTML += `
-                    <div class="bg-white dark:bg-carbonGray rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-deepBorder shadow-sm hover:shadow-2xl transition-all group scale-up ${isSold ? 'opacity-50' : ''}">
+                    <div class="bg-white dark:bg-carbonGray rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-deepBorder shadow-sm transition-all group scale-up ${isSold ? 'opacity-50' : ''}">
                         <div class="h-64 overflow-hidden relative">
                             ${isSold ? '<div class="absolute inset-0 z-20 bg-black/60 flex items-center justify-center"><span class="bg-red-600 text-white font-black px-6 py-2 rounded-xl text-xl rotate-6 shadow-2xl">SOLD</span></div>' : ''}
-                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-amoledBlack/80 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-600 z-10 uppercase tracking-tighter">FLAT ${item.flat_number}</span>
+                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-amoledBlack/80 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-600 z-10 uppercase">FLAT ${item.flat_number}</span>
                             <img src="${item.image_url}" class="w-full h-full object-cover ${isSold ? 'grayscale' : 'group-hover:scale-105 transition-transform duration-700'}">
                         </div>
                         <div class="p-8">
                             <div class="flex justify-between items-start mb-6">
-                                <div><h3 class="font-black text-xl text-slate-800 dark:text-white mb-1 line-clamp-1">${item.title}</h3><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">${item.user_name || 'Neighbor'}</p></div>
-                                <p class="text-indigo-600 dark:text-indigo-400 font-black text-2xl">₹${item.price}</p>
+                                <div><h3 class="font-black text-xl text-slate-800 dark:text-white mb-1 line-clamp-1 tracking-tighter">${item.title}</h3><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">${item.user_name}</p></div>
+                                <p class="text-indigo-600 dark:text-indigo-400 font-black text-2xl tracking-tighter">₹${item.price}</p>
                             </div>
                             
                             <div class="flex flex-col gap-2">
                                 <a href="${isSold ? '#' : 'https://wa.me/91'+item.phone.replace(/\D/g,'')}" target="_blank" 
-                                    class="w-full py-4 ${isSold ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-slate-900 dark:bg-white dark:text-black text-white shadow-xl shadow-slate-200 dark:shadow-none'} rounded-2xl font-black flex items-center justify-center gap-2 transition-all">
-                                    <i data-lucide="${isSold ? 'lock' : 'message-circle'}" class="w-5 h-5"></i> ${isSold ? 'Unavailable' : 'Chat'}
+                                    class="w-full py-4 ${isSold ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-slate-900 dark:bg-white dark:text-black text-white shadow-xl shadow-slate-200'} rounded-2xl font-black flex items-center justify-center gap-2 transition-all">
+                                    <i data-lucide="${isSold ? 'lock' : 'message-circle'}" class="w-5 h-5"></i> Chat
                                 </a>
 
                                 ${!isSold && item.phone !== profile?.phone ? `
-                                    <button onclick="claimItem(${item.id})" class="w-full py-3 text-[10px] font-black uppercase tracking-widest ${amIInterested ? 'bg-indigo-600 text-white' : 'text-indigo-600 border border-indigo-600'} rounded-xl active:scale-95 transition-all">
-                                        ${amIInterested ? 'Interest Confirmed ✓' : 'I am Buying This'}
+                                    <button onclick="claimInterest(${item.id})" class="w-full py-3 text-[10px] font-black uppercase tracking-widest ${amIInterested ? 'bg-indigo-600 text-white' : 'text-indigo-600 border border-indigo-600'} rounded-xl active:scale-95 transition-all">
+                                        ${amIInterested ? 'Interest Logged ✓' : 'I am Buying This'}
                                     </button>
                                 ` : ''}
                             </div>
@@ -178,72 +197,93 @@
             lucide.createIcons();
         }
 
-        async function claimItem(id) {
+        async function claimInterest(id) {
             const item = allListings.find(i => i.id === id);
             const interestedList = item.interested_names ? item.interested_names.split(', ') : [];
+            const myEntry = `${profile.name} (${profile.phone})`;
             
-            if (interestedList.includes(profile.name)) return alert("You are already on the interested list!");
+            if (interestedList.includes(myEntry)) return alert("Already interested!");
 
-            if (confirm(`Notify the seller that ${profile.name} wants to buy this?`)) {
-                let updatedNames = item.interested_names ? item.interested_names + ", " + profile.name : profile.name;
-                
+            if (confirm("Send purchase intent to seller?")) {
+                let updatedNames = item.interested_names ? item.interested_names + ", " + myEntry : myEntry;
                 await supabaseClient.from('listings').update({ interested_names: updatedNames }).eq('id', id);
                 await fetchListings();
             }
         }
 
-        function renderMyListings() {
-            const container = document.getElementById('my-listings-container');
-            const myItems = allListings.filter(i => i.phone === profile.phone);
-            container.innerHTML = myItems.length ? '' : '<p class="text-slate-500 italic text-center py-10 text-sm">No items listed yet.</p>';
+        function renderDashboard() {
+            const listingsContainer = document.getElementById('my-listings-container');
+            const purchasesContainer = document.getElementById('purchases-container');
             
-            myItems.forEach(item => {
+            const mySales = allListings.filter(i => i.phone === profile.phone);
+            const myPurchases = allListings.filter(i => i.final_buyer_phone === profile.phone);
+
+            // Calculate Stats
+            const totalGained = mySales.filter(i => i.is_sold).reduce((sum, item) => sum + parseFloat(item.price), 0);
+            const totalSpent = myPurchases.reduce((sum, item) => sum + parseFloat(item.price), 0);
+
+            document.getElementById('statGained').innerText = `₹${totalGained}`;
+            document.getElementById('statSpent').innerText = `₹${totalSpent}`;
+
+            // Render Sales/My Listings
+            listingsContainer.innerHTML = mySales.length ? '' : '<p class="text-slate-400 text-[10px] font-bold uppercase text-center py-6 border border-dashed border-slate-200 dark:border-deepBorder rounded-3xl">No listings yet</p>';
+            mySales.forEach(item => {
                 const interestList = item.interested_names ? item.interested_names.split(', ') : [];
-                
-                container.innerHTML += `
+                listingsContainer.innerHTML += `
                     <div class="bg-slate-50 dark:bg-amoledBlack p-5 rounded-3xl border dark:border-deepBorder shadow-sm">
-                        <div class="flex items-center gap-4 mb-4">
-                            <img src="${item.image_url}" class="w-16 h-16 rounded-2xl object-cover border dark:border-deepBorder ${item.is_sold ? 'grayscale' : ''}">
+                        <div class="flex items-center gap-4 ${item.is_sold ? 'opacity-40' : ''}">
+                            <img src="${item.image_url}" class="w-14 h-14 rounded-2xl object-cover border dark:border-deepBorder">
                             <div class="flex-1">
-                                <h4 class="font-black text-slate-800 dark:text-white text-sm line-clamp-1">${item.title}</h4>
-                                <p class="text-indigo-600 font-black text-xs">₹${item.price}</p>
+                                <h4 class="font-black dark:text-white text-xs line-clamp-1 uppercase tracking-tighter">${item.title}</h4>
+                                <p class="text-indigo-600 font-black text-[10px]">₹${item.price} ${item.is_sold ? '• SOLD' : ''}</p>
                             </div>
-                            <button onclick="deleteItem(${item.id})" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-colors"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                            <button onclick="deleteItem(${item.id})" class="p-2 text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
-                        
-                        ${interestList.length > 0 && !item.is_sold ? `
-                            <div class="space-y-2 bg-indigo-600/5 p-4 rounded-2xl border border-indigo-600/20 mt-4">
-                                <p class="text-[9px] font-black text-indigo-600 uppercase tracking-widest mb-2 italic text-center">Interested Neighbors:</p>
-                                ${interestList.map(name => `
-                                    <div class="flex items-center justify-between bg-white dark:bg-carbonGray p-3 rounded-xl border dark:border-deepBorder shadow-sm">
-                                        <span class="text-xs font-bold dark:text-white">${name}</span>
-                                        <button onclick="confirmSale(${item.id})" 
-                                            class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter active:scale-95 transition-all shadow-md shadow-indigo-500/10">
-                                            Sold to ${name.split(' ')[0]}
-                                        </button>
-                                    </div>
-                                `).join('')}
+                        ${!item.is_sold && interestList.length ? `
+                            <div class="mt-4 space-y-2">
+                                ${interestList.map(entry => {
+                                    const buyerName = entry.split(' (')[0];
+                                    const buyerPhone = entry.split('(')[1].replace(')', '');
+                                    return `
+                                        <div class="flex items-center justify-between bg-white dark:bg-carbonGray p-3 rounded-xl border dark:border-deepBorder">
+                                            <span class="text-[10px] font-bold dark:text-white uppercase tracking-tighter">${buyerName}</span>
+                                            <button onclick="finalizeSale(${item.id}, '${buyerPhone}')" 
+                                                class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest active:scale-95 transition-all">
+                                                Confirm Sale
+                                            </button>
+                                        </div>`;
+                                }).join('')}
                             </div>
                         ` : ''}
-
-                        ${!interestList.length && !item.is_sold ? `
-                            <div class="py-3 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center border border-dashed border-slate-200 dark:border-deepBorder rounded-xl italic">Waiting for buyers...</div>
-                        ` : ''}
-
-                        ${item.is_sold ? `<div class="py-3 text-[10px] font-black text-slate-500 uppercase tracking-widest text-center">✓ Item Sold</div>` : ''}
                     </div>`;
             });
+
+            // Render Purchases
+            purchasesContainer.innerHTML = myPurchases.length ? '' : '<p class="text-slate-400 text-[10px] font-bold uppercase text-center py-6 border border-dashed border-slate-200 dark:border-deepBorder rounded-3xl italic">No purchases yet</p>';
+            myPurchases.forEach(item => {
+                purchasesContainer.innerHTML += `
+                    <div class="flex items-center gap-4 bg-white dark:bg-amoledBlack p-4 rounded-3xl border dark:border-deepBorder">
+                        <img src="${item.image_url}" class="w-12 h-12 rounded-xl object-cover opacity-60">
+                        <div class="flex-1">
+                            <h4 class="font-black dark:text-white text-[10px] uppercase tracking-tighter line-clamp-1">${item.title}</h4>
+                            <p class="text-slate-400 font-bold text-[9px] uppercase tracking-widest">From Flat ${item.flat_number}</p>
+                        </div>
+                        <p class="font-black text-indigo-600 text-sm tracking-tighter">- ₹${item.price}</p>
+                    </div>`;
+            });
+
             lucide.createIcons();
         }
 
-        async function confirmSale(id) {
-            if (confirm("Mark this item as permanently SOLD?")) {
-                await supabaseClient.from('listings').update({ is_sold: true }).eq('id', id);
+        async function finalizeSale(id, buyerPhone) {
+            if (confirm("Confirm that you've received the payment? This will update your history and the buyer's purchases.")) {
+                await supabaseClient.from('listings').update({ is_sold: true, final_buyer_phone: buyerPhone }).eq('id', id);
                 await fetchListings();
-                renderMyListings();
+                renderDashboard();
             }
         }
 
+        // POST, DELETE, SAVE, TOGGLE (Same logic)
         async function handlePost() {
             const btn = document.getElementById('postBtn');
             const file = document.getElementById('itemFile').files[0];
@@ -262,14 +302,13 @@
                 is_sold: false
             }]);
             toggleSellModal(); await fetchListings();
-            btn.disabled = false; btn.innerHTML = "Post Listing";
+            btn.disabled = false; btn.innerText = "Post Listing";
         }
 
         async function deleteItem(id) {
             if (confirm("Delete permanently?")) {
                 await supabaseClient.from('listings').delete().eq('id', id);
                 await fetchListings();
-                renderMyListings();
             }
         }
 
@@ -289,7 +328,7 @@
             if (!m.classList.contains('hidden')) {
                 document.getElementById('profileNameDisplay').innerText = profile.name;
                 document.getElementById('profileMetaDisplay').innerText = `Flat ${profile.flat} • ${profile.phone}`;
-                renderMyListings();
+                renderDashboard();
             }
         }
 
