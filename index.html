@@ -23,6 +23,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .glass { backdrop-filter: blur(24px); transition: all 0.4s ease; }
         .dark .glass { background: rgba(0, 0, 0, 0.7); border-color: rgba(255, 255, 255, 0.05); }
+        input::-webkit-inner-spin-button { display: none; }
         .scale-up { animation: scaleUp 0.3s ease-out; }
         @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
@@ -53,18 +54,16 @@
                 class="w-full pl-16 pr-6 py-5 bg-white dark:bg-carbonGray border dark:border-deepBorder rounded-[2.5rem] shadow-2xl dark:shadow-none outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all text-lg dark:text-white">
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid">
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid"></div>
     </main>
 
     <div id="setupModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-xl p-4">
         <div class="bg-white dark:bg-carbonGray w-full max-w-md rounded-[3rem] p-10 shadow-2xl text-center scale-up border dark:border-deepBorder">
-            <h2 class="text-3xl font-black mb-2 dark:text-white italic tracking-tighter uppercase">Sign Up</h2>
-            <p class="text-slate-500 dark:text-slate-400 mb-8 font-medium">Join your building's marketplace.</p>
-            <div class="space-y-4">
+            <h2 class="text-3xl font-black mb-2 dark:text-white italic uppercase tracking-tighter">Sign Up</h2>
+            <div class="space-y-4 mt-6">
                 <input type="text" id="setupName" placeholder="Full Name" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
                 <input type="text" id="setupPhone" placeholder="WhatsApp Number" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
-                <input type="text" id="setupFlat" placeholder="Flat No. (e.g. B-201)" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
+                <input type="text" id="setupFlat" placeholder="Flat No." class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
                 <button onclick="saveProfile()" class="w-full py-5 bg-indigo-600 text-white rounded-3xl font-black text-lg">Enter Marketplace</button>
             </div>
         </div>
@@ -73,20 +72,20 @@
     <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-end bg-black/60 backdrop-blur-sm">
         <div class="bg-white dark:bg-carbonGray h-full w-full max-w-md p-8 shadow-2xl border-l dark:border-deepBorder overflow-y-auto">
             <div class="flex justify-between items-center mb-10">
-                <h2 class="text-2xl font-black dark:text-white font-mono uppercase tracking-tighter">My Account</h2>
+                <h2 class="text-2xl font-black dark:text-white">My Account</h2>
                 <button onclick="toggleSettings()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
             </div>
 
-            <div class="bg-slate-900 dark:bg-amoledBlack text-white p-8 rounded-[2.5rem] mb-10 border dark:border-deepBorder">
+            <div class="bg-slate-900 dark:bg-amoledBlack text-white p-8 rounded-[2.5rem] mb-10 border dark:border-deepBorder shadow-2xl">
                 <h3 id="profileNameDisplay" class="text-2xl font-black mb-1 italic"></h3>
                 <p id="profileMetaDisplay" class="text-slate-400 font-bold text-sm"></p>
                 <div class="mt-6 flex gap-4">
-                    <button onclick="toggleTheme()" class="text-xs font-bold text-indigo-400 underline">Switch Theme</button>
+                    <button onclick="toggleTheme()" class="text-xs font-bold text-indigo-400 underline">Theme</button>
                     <button onclick="resetProfile()" class="text-xs font-bold text-red-500 underline">Log Out</button>
                 </div>
             </div>
 
-            <h3 class="font-black text-lg mb-6 flex items-center gap-2 dark:text-white">Your Listed Items</h3>
+            <h3 class="font-black text-lg mb-6 dark:text-white flex items-center gap-2"><i data-lucide="layout-grid" class="w-5 h-5"></i> My Listings</h3>
             <div id="my-listings-container" class="space-y-4"></div>
         </div>
     </div>
@@ -98,17 +97,17 @@
                 <button onclick="toggleSellModal()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
             </div>
             <form id="listingForm" class="space-y-5">
-                <input type="text" id="itemTitle" required placeholder="What are you selling?" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
+                <input type="text" id="itemTitle" required placeholder="Item Title" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
                 <input type="number" id="itemPrice" required placeholder="Price (₹)" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
-                <div class="border-2 border-dashed border-slate-200 dark:border-deepBorder rounded-[2rem] p-10 text-center bg-slate-50 dark:bg-amoledBlack">
+                <div class="border-2 border-dashed border-slate-200 dark:border-deepBorder rounded-[2rem] p-10 text-center bg-slate-50 dark:bg-amoledBlack hover:border-indigo-600 transition-colors">
                     <label class="cursor-pointer block">
                         <i data-lucide="camera" class="w-10 h-10 mx-auto text-slate-400 mb-2"></i>
-                        <span class="text-sm text-slate-500 font-black">Add Item Photo</span>
+                        <span class="text-sm text-slate-500 font-black">Add Photo</span>
                         <input type="file" id="itemFile" accept="image/*" class="hidden" onchange="handlePreview(this)">
                     </label>
-                    <div id="previewContainer" class="hidden mt-4 h-56 w-full rounded-2xl bg-cover bg-center border dark:border-deepBorder"></div>
+                    <div id="previewContainer" class="hidden mt-4 h-56 w-full rounded-2xl bg-cover bg-center border border-slate-200 dark:border-deepBorder"></div>
                 </div>
-                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-[2rem] font-black text-xl">Post to Market</button>
+                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-[2rem] font-black text-xl shadow-xl">Post to Market</button>
             </form>
         </div>
     </div>
@@ -141,34 +140,35 @@
 
         function renderAll(items) {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold">No items available.</p>';
+            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold">No items found.</p>';
             
             items.forEach(item => {
                 const isSold = item.is_sold;
-                const isClaimedByMe = item.buyer_phone === profile?.phone;
+                const interestedList = item.interested_names ? item.interested_names.split(', ') : [];
+                const amIInterested = interestedList.includes(profile?.name);
                 
                 grid.innerHTML += `
-                    <div class="bg-white dark:bg-carbonGray rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-deepBorder shadow-sm transition-all group scale-up ${isSold ? 'opacity-50' : ''}">
+                    <div class="bg-white dark:bg-carbonGray rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-deepBorder shadow-sm hover:shadow-2xl transition-all group scale-up ${isSold ? 'opacity-50' : ''}">
                         <div class="h-64 overflow-hidden relative">
-                            ${isSold ? '<div class="absolute inset-0 z-20 bg-black/60 flex items-center justify-center"><span class="bg-red-600 text-white font-black px-6 py-2 rounded-xl text-xl rotate-12 shadow-2xl tracking-tighter">SOLD</span></div>' : ''}
-                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-amoledBlack/80 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-600 z-10">FLAT ${item.flat_number}</span>
+                            ${isSold ? '<div class="absolute inset-0 z-20 bg-black/60 flex items-center justify-center"><span class="bg-red-600 text-white font-black px-6 py-2 rounded-xl text-xl rotate-6 shadow-2xl">SOLD</span></div>' : ''}
+                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-amoledBlack/80 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-600 z-10 uppercase tracking-tighter">FLAT ${item.flat_number}</span>
                             <img src="${item.image_url}" class="w-full h-full object-cover ${isSold ? 'grayscale' : 'group-hover:scale-105 transition-transform duration-700'}">
                         </div>
                         <div class="p-8">
                             <div class="flex justify-between items-start mb-6">
-                                <div><h3 class="font-black text-xl text-slate-800 dark:text-white mb-1">${item.title}</h3><p class="text-slate-400 text-xs font-bold uppercase">${item.user_name || 'Neighbor'}</p></div>
+                                <div><h3 class="font-black text-xl text-slate-800 dark:text-white mb-1 line-clamp-1">${item.title}</h3><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">${item.user_name || 'Neighbor'}</p></div>
                                 <p class="text-indigo-600 dark:text-indigo-400 font-black text-2xl">₹${item.price}</p>
                             </div>
                             
                             <div class="flex flex-col gap-2">
                                 <a href="${isSold ? '#' : 'https://wa.me/91'+item.phone.replace(/\D/g,'')}" target="_blank" 
-                                    class="w-full py-4 ${isSold ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-slate-900 dark:bg-white dark:text-black text-white'} rounded-2xl font-black flex items-center justify-center gap-2 transition-all active:scale-95">
-                                    <i data-lucide="${isSold ? 'lock' : 'message-circle'}" class="w-5 h-5"></i> ${isSold ? 'Unavailable' : 'Chat with Seller'}
+                                    class="w-full py-4 ${isSold ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-slate-900 dark:bg-white dark:text-black text-white shadow-xl shadow-slate-200 dark:shadow-none'} rounded-2xl font-black flex items-center justify-center gap-2 transition-all">
+                                    <i data-lucide="${isSold ? 'lock' : 'message-circle'}" class="w-5 h-5"></i> ${isSold ? 'Unavailable' : 'Chat'}
                                 </a>
 
                                 ${!isSold && item.phone !== profile?.phone ? `
-                                    <button onclick="claimItem(${item.id})" class="w-full py-3 text-xs font-black uppercase tracking-widest ${isClaimedByMe ? 'bg-indigo-600 text-white' : 'text-indigo-600 border border-indigo-600'} rounded-xl">
-                                        ${isClaimedByMe ? 'You Claimed Interest ✓' : 'I am Buying This'}
+                                    <button onclick="claimItem(${item.id})" class="w-full py-3 text-[10px] font-black uppercase tracking-widest ${amIInterested ? 'bg-indigo-600 text-white' : 'text-indigo-600 border border-indigo-600'} rounded-xl active:scale-95 transition-all">
+                                        ${amIInterested ? 'Interest Confirmed ✓' : 'I am Buying This'}
                                     </button>
                                 ` : ''}
                             </div>
@@ -179,47 +179,65 @@
         }
 
         async function claimItem(id) {
-            if (confirm("Send a purchase confirmation request to the seller?")) {
-                await supabaseClient.from('listings').update({ buyer_phone: profile.phone }).eq('id', id);
-                fetchListings();
+            const item = allListings.find(i => i.id === id);
+            const interestedList = item.interested_names ? item.interested_names.split(', ') : [];
+            
+            if (interestedList.includes(profile.name)) return alert("You are already on the interested list!");
+
+            if (confirm(`Notify the seller that ${profile.name} wants to buy this?`)) {
+                let updatedNames = item.interested_names ? item.interested_names + ", " + profile.name : profile.name;
+                
+                await supabaseClient.from('listings').update({ interested_names: updatedNames }).eq('id', id);
+                await fetchListings();
             }
         }
 
         function renderMyListings() {
             const container = document.getElementById('my-listings-container');
             const myItems = allListings.filter(i => i.phone === profile.phone);
-            container.innerHTML = myItems.length ? '' : '<p class="text-slate-500 italic text-center py-10 text-sm">Nothing posted yet.</p>';
+            container.innerHTML = myItems.length ? '' : '<p class="text-slate-500 italic text-center py-10 text-sm">No items listed yet.</p>';
             
             myItems.forEach(item => {
-                const hasInterest = item.buyer_phone && !item.is_sold;
+                const interestList = item.interested_names ? item.interested_names.split(', ') : [];
+                
                 container.innerHTML += `
-                    <div class="bg-slate-50 dark:bg-amoledBlack p-5 rounded-3xl border dark:border-deepBorder">
+                    <div class="bg-slate-50 dark:bg-amoledBlack p-5 rounded-3xl border dark:border-deepBorder shadow-sm">
                         <div class="flex items-center gap-4 mb-4">
                             <img src="${item.image_url}" class="w-16 h-16 rounded-2xl object-cover border dark:border-deepBorder ${item.is_sold ? 'grayscale' : ''}">
                             <div class="flex-1">
-                                <h4 class="font-black text-slate-800 dark:text-white text-sm">${item.title}</h4>
-                                <p class="text-indigo-600 dark:text-indigo-400 font-black text-xs">₹${item.price}</p>
+                                <h4 class="font-black text-slate-800 dark:text-white text-sm line-clamp-1">${item.title}</h4>
+                                <p class="text-indigo-600 font-black text-xs">₹${item.price}</p>
                             </div>
                             <button onclick="deleteItem(${item.id})" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-full transition-colors"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
                         </div>
                         
-                        ${hasInterest ? `
-                            <div class="bg-indigo-600/10 p-4 rounded-2xl mb-2 text-center border border-indigo-600/20">
-                                <p class="text-[10px] font-black text-indigo-600 uppercase mb-2">Neighbor interested: ${item.buyer_phone}</p>
-                                <button onclick="confirmSale(${item.id})" class="bg-indigo-600 text-white w-full py-3 rounded-xl text-xs font-black uppercase">Confirm Sale to Buyer</button>
+                        ${interestList.length > 0 && !item.is_sold ? `
+                            <div class="space-y-2 bg-indigo-600/5 p-4 rounded-2xl border border-indigo-600/20 mt-4">
+                                <p class="text-[9px] font-black text-indigo-600 uppercase tracking-widest mb-2 italic text-center">Interested Neighbors:</p>
+                                ${interestList.map(name => `
+                                    <div class="flex items-center justify-between bg-white dark:bg-carbonGray p-3 rounded-xl border dark:border-deepBorder shadow-sm">
+                                        <span class="text-xs font-bold dark:text-white">${name}</span>
+                                        <button onclick="confirmSale(${item.id})" 
+                                            class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-tighter active:scale-95 transition-all shadow-md shadow-indigo-500/10">
+                                            Sold to ${name.split(' ')[0]}
+                                        </button>
+                                    </div>
+                                `).join('')}
                             </div>
                         ` : ''}
 
-                        ${item.is_sold ? `
-                            <button disabled class="w-full py-3 rounded-2xl text-xs font-black uppercase bg-slate-200 dark:bg-slate-800 text-slate-400">Transaction Complete</button>
+                        ${!interestList.length && !item.is_sold ? `
+                            <div class="py-3 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center border border-dashed border-slate-200 dark:border-deepBorder rounded-xl italic">Waiting for buyers...</div>
                         ` : ''}
+
+                        ${item.is_sold ? `<div class="py-3 text-[10px] font-black text-slate-500 uppercase tracking-widest text-center">✓ Item Sold</div>` : ''}
                     </div>`;
             });
             lucide.createIcons();
         }
 
         async function confirmSale(id) {
-            if (confirm("Confirm that this neighbor has paid and received the item? This will mark it as SOLD for everyone.")) {
+            if (confirm("Mark this item as permanently SOLD?")) {
                 await supabaseClient.from('listings').update({ is_sold: true }).eq('id', id);
                 await fetchListings();
                 renderMyListings();
@@ -230,7 +248,7 @@
             const btn = document.getElementById('postBtn');
             const file = document.getElementById('itemFile').files[0];
             if (!file) return alert("Photo required!");
-            btn.disabled = true; btn.innerText = "Posting...";
+            btn.disabled = true; btn.innerHTML = "Syncing...";
             const fileName = `${Date.now()}-${file.name}`;
             await supabaseClient.storage.from('listing-images').upload(fileName, file);
             const { data: urlData } = supabaseClient.storage.from('listing-images').getPublicUrl(fileName);
@@ -243,8 +261,8 @@
                 image_url: urlData.publicUrl,
                 is_sold: false
             }]);
-            toggleSellModal(); fetchListings();
-            btn.disabled = false; btn.innerText = "Post Listing";
+            toggleSellModal(); await fetchListings();
+            btn.disabled = false; btn.innerHTML = "Post Listing";
         }
 
         async function deleteItem(id) {
@@ -259,7 +277,7 @@
             const name = document.getElementById('setupName').value;
             const phone = document.getElementById('setupPhone').value;
             const flat = document.getElementById('setupFlat').value;
-            if (!name || !phone || !flat) return alert("Required!");
+            if (!name || !phone || !flat) return alert("Fill all fields!");
             profile = { name, phone, flat };
             localStorage.setItem('neighbor_profile', JSON.stringify(profile));
             document.getElementById('setupModal').classList.add('hidden');
@@ -289,7 +307,7 @@
 
         function openSellModal() { if (!profile) document.getElementById('setupModal').classList.remove('hidden'); else toggleSellModal(); }
         function toggleSellModal() { document.getElementById('sellModal').classList.toggle('hidden'); }
-        function resetProfile() { if (confirm("Sign out?")) { localStorage.removeItem('neighbor_profile'); location.reload(); } }
+        function resetProfile() { if (confirm("Log Out?")) { localStorage.removeItem('neighbor_profile'); location.reload(); } }
         function filterListings() {
             const q = document.getElementById('searchInput').value.toLowerCase();
             renderAll(allListings.filter(i => i.title.toLowerCase().includes(q)));
