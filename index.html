@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OurCommunity | AMOLED Marketplace</title>
+    <title>OurCommunity | RVCE Campus Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -23,6 +23,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .glass { backdrop-filter: blur(24px); transition: all 0.4s ease; }
         .dark .glass { background: rgba(0, 0, 0, 0.7); border-color: rgba(255, 255, 255, 0.05); }
+        input::-webkit-inner-spin-button { display: none; }
         .scale-up { animation: scaleUp 0.3s ease-out; }
         @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
@@ -32,25 +33,30 @@
     <nav class="sticky top-0 z-40 glass border-b px-6 py-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-indigo-600 p-2 rounded-2xl shadow-lg"><i data-lucide="home" class="w-5 h-5 text-white"></i></div>
+                <div class="bg-indigo-600 p-2 rounded-2xl shadow-lg shadow-indigo-500/10"><i data-lucide="home" class="w-5 h-5 text-white"></i></div>
                 <h1 class="text-xl font-black tracking-tight dark:text-white">OurCommunity</h1>
             </div>
             <div class="flex items-center gap-4">
                 <button onclick="toggleSettings()" class="p-2.5 hover:bg-slate-100 dark:hover:bg-carbonGray rounded-full transition-all">
                     <i data-lucide="user" class="w-6 h-6 text-slate-600 dark:text-slate-400"></i>
                 </button>
-                <button onclick="openSellModal()" class="bg-slate-900 dark:bg-white dark:text-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:opacity-90 shadow-xl">
-                    <i data-lucide="plus" class="w-4 h-4"></i> Sell
+                <button onclick="openSellModal()" class="bg-slate-900 dark:bg-white dark:text-black text-white px-6 py-2.5 rounded-full font-bold flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Post
                 </button>
             </div>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 py-8">
+        <div class="flex justify-center gap-8 mb-8 border-b dark:border-deepBorder">
+            <button id="tabSell" onclick="switchTab('sell')" class="pb-4 px-2 font-black uppercase text-xs tracking-widest text-indigo-600 border-b-2 border-indigo-600">Marketplace</button>
+            <button id="tabBorrow" onclick="switchTab('borrow')" class="pb-4 px-2 font-black uppercase text-xs tracking-widest text-slate-400 border-b-2 border-transparent hover:text-indigo-400">Borrowing (Free)</button>
+        </div>
+
         <div class="relative max-w-2xl mx-auto mb-12 group">
-            <i data-lucide="search" class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-indigo-500"></i>
-            <input type="text" id="searchInput" oninput="filterListings()" placeholder="Search in your building..." 
-                class="w-full pl-16 pr-6 py-5 bg-white dark:bg-carbonGray border dark:border-deepBorder rounded-[2.5rem] shadow-2xl dark:shadow-none outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all text-lg dark:text-white">
+            <i data-lucide="search" class="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-indigo-500 transition-colors"></i>
+            <input type="text" id="searchInput" oninput="filterListings()" placeholder="Search campus items..." 
+                class="w-full pl-16 pr-6 py-5 bg-white dark:bg-carbonGray border border-transparent dark:border-deepBorder rounded-[2.5rem] shadow-xl dark:shadow-none outline-none focus:ring-4 focus:ring-indigo-500/10 transition-all text-lg dark:text-white">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid"></div>
@@ -59,18 +65,18 @@
     <div id="settingsModal" class="fixed inset-0 z-50 hidden flex items-center justify-end bg-black/60 backdrop-blur-sm">
         <div class="bg-white dark:bg-carbonGray h-full w-full max-w-md p-8 shadow-2xl border-l dark:border-deepBorder overflow-y-auto">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">My Community Dashboard</h2>
+                <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">Campus Profile</h2>
                 <button onclick="toggleSettings()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
             </div>
 
             <div class="grid grid-cols-2 gap-4 mb-8">
                 <div class="bg-indigo-600 p-5 rounded-[2rem] text-white">
-                    <p class="text-[10px] font-black uppercase opacity-60 mb-1">Money Gained</p>
+                    <p class="text-[10px] font-black uppercase opacity-60 mb-1">Total Earnings</p>
                     <h4 id="statGained" class="text-2xl font-black">₹0</h4>
                 </div>
-                <div class="bg-slate-900 dark:bg-amoledBlack p-5 rounded-[2rem] text-white border dark:border-deepBorder">
-                    <p class="text-[10px] font-black uppercase opacity-60 mb-1">Money Put In</p>
-                    <h4 id="statSpent" class="text-2xl font-black">₹0</h4>
+                <div class="bg-slate-900 dark:bg-amoledBlack p-5 rounded-[2rem] text-white border dark:border-deepBorder text-center">
+                    <p class="text-[10px] font-black uppercase opacity-60 mb-1">Items Borrowed</p>
+                    <h4 id="statBorrowedCount" class="text-2xl font-black">0</h4>
                 </div>
             </div>
 
@@ -78,55 +84,64 @@
                 <h3 id="profileNameDisplay" class="text-xl font-black mb-1 italic dark:text-white"></h3>
                 <p id="profileMetaDisplay" class="text-slate-400 font-bold text-xs mb-4"></p>
                 <div class="flex gap-4">
-                    <button onclick="toggleTheme()" class="text-[10px] font-black uppercase text-indigo-600">Switch Theme</button>
+                    <button onclick="toggleTheme()" class="text-[10px] font-black uppercase text-indigo-600">Theme</button>
                     <button onclick="resetProfile()" class="text-[10px] font-black uppercase text-red-500">Sign Out</button>
                 </div>
             </div>
 
             <div class="space-y-8">
                 <div>
-                    <h3 class="font-black text-sm uppercase tracking-widest mb-4 flex items-center gap-2 dark:text-white"><i data-lucide="shopping-cart" class="w-4 h-4 text-indigo-600"></i> Purchase History</h3>
-                    <div id="purchases-container" class="space-y-3"></div>
+                    <h3 class="font-black text-sm uppercase tracking-widest mb-4 flex items-center gap-2 dark:text-white">Usage History</h3>
+                    <div id="history-container" class="space-y-3"></div>
                 </div>
                 <div>
-                    <h3 class="font-black text-sm uppercase tracking-widest mb-4 flex items-center gap-2 dark:text-white"><i data-lucide="tag" class="w-4 h-4 text-indigo-600"></i> My Listings & Sales</h3>
+                    <h3 class="font-black text-sm uppercase tracking-widest mb-4 flex items-center gap-2 dark:text-white">My Campus Posts</h3>
                     <div id="my-listings-container" class="space-y-4"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="setupModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-xl p-4">
-        <div class="bg-white dark:bg-carbonGray w-full max-w-md rounded-[3rem] p-10 shadow-2xl text-center scale-up border dark:border-deepBorder">
-            <h2 class="text-3xl font-black mb-2 dark:text-white italic tracking-tighter uppercase">Sign Up</h2>
-            <div class="space-y-4 mt-6">
-                <input type="text" id="setupName" placeholder="Full Name" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
-                <input type="text" id="setupPhone" placeholder="WhatsApp Number" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
-                <input type="text" id="setupFlat" placeholder="Flat No." class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
-                <button onclick="saveProfile()" class="w-full py-5 bg-indigo-600 text-white rounded-3xl font-black text-lg">Enter Marketplace</button>
-            </div>
-        </div>
-    </div>
-
     <div id="sellModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
         <div class="bg-white dark:bg-carbonGray w-full max-w-lg rounded-[3rem] p-10 shadow-2xl border dark:border-deepBorder overflow-y-auto max-h-[90vh] scale-up">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-black dark:text-white">List Item</h2>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-black dark:text-white uppercase tracking-tighter">Create Post</h2>
                 <button onclick="toggleSellModal()" class="p-2 dark:text-slate-400"><i data-lucide="x"></i></button>
             </div>
+
+            <div class="flex gap-4 mb-6 bg-slate-100 dark:bg-amoledBlack p-2 rounded-2xl border dark:border-deepBorder">
+                <button id="postTypeSell" onclick="setPostType('sell')" class="flex-1 py-3 rounded-xl font-black uppercase text-[10px] bg-indigo-600 text-white transition-all">Selling</button>
+                <button id="postTypeBorrow" onclick="setPostType('borrow')" class="flex-1 py-3 rounded-xl font-black uppercase text-[10px] text-slate-400 transition-all">Lending (Free)</button>
+            </div>
+
             <form id="listingForm" class="space-y-5">
                 <input type="text" id="itemTitle" required placeholder="What is it?" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
-                <input type="number" id="itemPrice" required placeholder="Price (₹)" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
+                <div id="priceInputArea">
+                    <input type="number" id="itemPrice" placeholder="Price (₹)" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-2xl outline-none font-bold dark:text-white">
+                </div>
                 <div class="border-2 border-dashed border-slate-200 dark:border-deepBorder rounded-[2rem] p-10 text-center bg-slate-50 dark:bg-amoledBlack">
                     <label class="cursor-pointer block">
                         <i data-lucide="camera" class="w-10 h-10 mx-auto text-slate-400 mb-2"></i>
-                        <span class="text-sm text-slate-500 font-black">Add Photo</span>
+                        <span class="text-sm text-slate-500 font-bold">Add Item Photo</span>
                         <input type="file" id="itemFile" accept="image/*" class="hidden" onchange="handlePreview(this)">
                     </label>
                     <div id="previewContainer" class="hidden mt-4 h-56 w-full rounded-2xl bg-cover bg-center border dark:border-deepBorder"></div>
                 </div>
-                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-[2rem] font-black text-xl">Post Listing</button>
+                <button type="button" id="postBtn" onclick="handlePost()" class="w-full py-5 bg-indigo-600 text-white rounded-[2rem] font-black text-xl">Post to Campus</button>
             </form>
+        </div>
+    </div>
+
+    <div id="setupModal" class="fixed inset-0 z-[60] hidden flex items-center justify-center bg-black/90 backdrop-blur-xl p-4">
+        <div class="bg-white dark:bg-carbonGray w-full max-w-md rounded-[3rem] p-10 shadow-2xl text-center scale-up border dark:border-deepBorder">
+            <h2 class="text-3xl font-black mb-2 dark:text-white italic uppercase tracking-tighter">Sign Up</h2>
+            <p class="text-slate-500 dark:text-slate-400 mb-8 font-medium">Join the RVCE mutual aid network.</p>
+            <div class="space-y-4">
+                <input type="text" id="setupName" placeholder="Full Name" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
+                <input type="text" id="setupPhone" placeholder="WhatsApp Number" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
+                <input type="text" id="setupFlat" placeholder="Flat No. / Hostel Room" class="w-full p-5 bg-slate-50 dark:bg-amoledBlack border dark:border-deepBorder rounded-3xl outline-none text-center dark:text-white font-bold">
+                <button onclick="saveProfile()" class="w-full py-5 bg-indigo-600 text-white rounded-3xl font-black text-lg">Enter Community</button>
+            </div>
         </div>
     </div>
 
@@ -137,6 +152,8 @@
 
         let allListings = [];
         let profile = JSON.parse(localStorage.getItem('neighbor_profile'));
+        let currentView = 'sell';
+        let modalPostType = 'sell';
 
         window.onload = () => {
             if (!profile) document.getElementById('setupModal').classList.remove('hidden');
@@ -144,9 +161,18 @@
             lucide.createIcons();
         };
 
-        function toggleTheme() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.theme = isDark ? 'dark' : 'light';
+        function switchTab(type) {
+            currentView = type;
+            document.getElementById('tabSell').className = type === 'sell' ? 'pb-4 px-2 font-black uppercase text-xs tracking-widest text-indigo-600 border-b-2 border-indigo-600' : 'pb-4 px-2 font-black uppercase text-xs tracking-widest text-slate-400 border-b-2 border-transparent';
+            document.getElementById('tabBorrow').className = type === 'borrow' ? 'pb-4 px-2 font-black uppercase text-xs tracking-widest text-indigo-600 border-b-2 border-indigo-600' : 'pb-4 px-2 font-black uppercase text-xs tracking-widest text-slate-400 border-b-2 border-transparent';
+            renderAll(allListings);
+        }
+
+        function setPostType(type) {
+            modalPostType = type;
+            document.getElementById('priceInputArea').style.display = type === 'sell' ? 'block' : 'none';
+            document.getElementById('postTypeSell').className = type === 'sell' ? 'flex-1 py-3 rounded-xl font-black uppercase text-[10px] bg-indigo-600 text-white' : 'flex-1 py-3 rounded-xl font-black uppercase text-[10px] text-slate-400';
+            document.getElementById('postTypeBorrow').className = type === 'borrow' ? 'flex-1 py-3 rounded-xl font-black uppercase text-[10px] bg-indigo-600 text-white' : 'flex-1 py-3 rounded-xl font-black uppercase text-[10px] text-slate-400';
         }
 
         async function fetchListings() {
@@ -159,37 +185,33 @@
 
         function renderAll(items) {
             const grid = document.getElementById('product-grid');
-            grid.innerHTML = items.length ? '' : '<p class="col-span-full text-center text-slate-400 py-20 font-bold uppercase tracking-widest text-xs italic">Market is empty...</p>';
+            const filtered = items.filter(i => (i.category || 'sell') === currentView);
             
-            items.forEach(item => {
+            grid.innerHTML = filtered.length ? '' : `<p class="col-span-full text-center text-slate-400 py-24 font-bold uppercase tracking-widest text-xs italic">No items available for ${currentView}</p>`;
+            
+            filtered.forEach(item => {
                 const isSold = item.is_sold;
                 const interestedList = item.interested_names ? item.interested_names.split(', ') : [];
                 const amIInterested = interestedList.some(entry => entry.includes(profile?.phone));
-                
+                const priceTag = item.category === 'borrow' ? 'FREE' : `₹${item.price}`;
+
                 grid.innerHTML += `
                     <div class="bg-white dark:bg-carbonGray rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-deepBorder shadow-sm transition-all group scale-up ${isSold ? 'opacity-50' : ''}">
                         <div class="h-64 overflow-hidden relative">
-                            ${isSold ? '<div class="absolute inset-0 z-20 bg-black/60 flex items-center justify-center"><span class="bg-red-600 text-white font-black px-6 py-2 rounded-xl text-xl rotate-6 shadow-2xl">SOLD</span></div>' : ''}
-                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-amoledBlack/80 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-600 z-10 uppercase">FLAT ${item.flat_number}</span>
+                            ${isSold ? `<div class="absolute inset-0 z-20 bg-black/60 flex items-center justify-center"><span class="bg-red-600 text-white font-black px-6 py-2 rounded-xl text-xl rotate-6 shadow-2xl">${item.category === 'borrow' ? 'RETURNED' : 'SOLD'}</span></div>` : ''}
+                            <span class="absolute top-4 left-4 bg-white/90 dark:bg-amoledBlack/80 backdrop-blur px-4 py-1.5 rounded-full text-[10px] font-black text-indigo-600 z-10 uppercase tracking-tighter">${item.flat_number}</span>
                             <img src="${item.image_url}" class="w-full h-full object-cover ${isSold ? 'grayscale' : 'group-hover:scale-105 transition-transform duration-700'}">
                         </div>
                         <div class="p-8">
                             <div class="flex justify-between items-start mb-6">
-                                <div><h3 class="font-black text-xl text-slate-800 dark:text-white mb-1 line-clamp-1 tracking-tighter">${item.title}</h3><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">${item.user_name}</p></div>
-                                <p class="text-indigo-600 dark:text-indigo-400 font-black text-2xl tracking-tighter">₹${item.price}</p>
+                                <div><h3 class="font-black text-xl text-slate-800 dark:text-white mb-1 tracking-tighter">${item.title}</h3><p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">${item.user_name}</p></div>
+                                <p class="text-indigo-600 dark:text-indigo-400 font-black text-2xl tracking-tighter">${priceTag}</p>
                             </div>
-                            
                             <div class="flex flex-col gap-2">
-                                <a href="${isSold ? '#' : 'https://wa.me/91'+item.phone.replace(/\D/g,'')}" target="_blank" 
-                                    class="w-full py-4 ${isSold ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-slate-900 dark:bg-white dark:text-black text-white shadow-xl shadow-slate-200'} rounded-2xl font-black flex items-center justify-center gap-2 transition-all">
+                                <a href="${isSold ? '#' : 'https://wa.me/91'+item.phone.replace(/\D/g,'')}" target="_blank" class="w-full py-4 ${isSold ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed' : 'bg-slate-900 dark:bg-white dark:text-black text-white'} rounded-2xl font-black flex items-center justify-center gap-2 transition-all">
                                     <i data-lucide="${isSold ? 'lock' : 'message-circle'}" class="w-5 h-5"></i> Chat
                                 </a>
-
-                                ${!isSold && item.phone !== profile?.phone ? `
-                                    <button onclick="claimInterest(${item.id})" class="w-full py-3 text-[10px] font-black uppercase tracking-widest ${amIInterested ? 'bg-indigo-600 text-white' : 'text-indigo-600 border border-indigo-600'} rounded-xl active:scale-95 transition-all">
-                                        ${amIInterested ? 'Interest Logged ✓' : 'I am Buying This'}
-                                    </button>
-                                ` : ''}
+                                ${!isSold && item.phone !== profile?.phone ? `<button onclick="claimInterest(${item.id})" class="w-full py-3 text-[10px] font-black uppercase tracking-widest ${amIInterested ? 'bg-indigo-600 text-white' : 'text-indigo-600 border border-indigo-600'} rounded-xl transition-all">${amIInterested ? 'Interest Logged ✓' : item.category === 'borrow' ? 'I need to borrow this' : 'I am Buying This'}</button>` : ''}
                             </div>
                         </div>
                     </div>`;
@@ -201,10 +223,8 @@
             const item = allListings.find(i => i.id === id);
             const interestedList = item.interested_names ? item.interested_names.split(', ') : [];
             const myEntry = `${profile.name} (${profile.phone})`;
-            
-            if (interestedList.includes(myEntry)) return alert("Already interested!");
-
-            if (confirm("Send purchase intent to seller?")) {
+            if (interestedList.includes(myEntry)) return alert("Already logged!");
+            if (confirm("Send request to neighbor?")) {
                 let updatedNames = item.interested_names ? item.interested_names + ", " + myEntry : myEntry;
                 await supabaseClient.from('listings').update({ interested_names: updatedNames }).eq('id', id);
                 await fetchListings();
@@ -213,77 +233,48 @@
 
         function renderDashboard() {
             const listingsContainer = document.getElementById('my-listings-container');
-            const purchasesContainer = document.getElementById('purchases-container');
-            
+            const historyContainer = document.getElementById('history-container');
             const mySales = allListings.filter(i => i.phone === profile.phone);
-            const myPurchases = allListings.filter(i => i.final_buyer_phone === profile.phone);
+            const myHistory = allListings.filter(i => i.final_buyer_phone === profile.phone);
 
-            // Calculate Stats
-            const totalGained = mySales.filter(i => i.is_sold).reduce((sum, item) => sum + parseFloat(item.price), 0);
-            const totalSpent = myPurchases.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            const totalGained = mySales.filter(i => i.is_sold && i.category === 'sell').reduce((sum, item) => sum + parseFloat(item.price), 0);
+            const borrowedCount = myHistory.filter(i => i.category === 'borrow').length;
 
             document.getElementById('statGained').innerText = `₹${totalGained}`;
-            document.getElementById('statSpent').innerText = `₹${totalSpent}`;
+            document.getElementById('statBorrowedCount').innerText = borrowedCount;
 
-            // Render Sales/My Listings
-            listingsContainer.innerHTML = mySales.length ? '' : '<p class="text-slate-400 text-[10px] font-bold uppercase text-center py-6 border border-dashed border-slate-200 dark:border-deepBorder rounded-3xl">No listings yet</p>';
+            listingsContainer.innerHTML = mySales.length ? '' : '<p class="text-slate-400 text-[10px] font-black uppercase text-center py-6 border border-dashed border-slate-200 dark:border-deepBorder rounded-3xl">No posts yet</p>';
             mySales.forEach(item => {
                 const interestList = item.interested_names ? item.interested_names.split(', ') : [];
                 listingsContainer.innerHTML += `
-                    <div class="bg-slate-50 dark:bg-amoledBlack p-5 rounded-3xl border dark:border-deepBorder shadow-sm">
+                    <div class="bg-slate-50 dark:bg-amoledBlack p-5 rounded-3xl border dark:border-deepBorder">
                         <div class="flex items-center gap-4 ${item.is_sold ? 'opacity-40' : ''}">
                             <img src="${item.image_url}" class="w-14 h-14 rounded-2xl object-cover border dark:border-deepBorder">
-                            <div class="flex-1">
-                                <h4 class="font-black dark:text-white text-xs line-clamp-1 uppercase tracking-tighter">${item.title}</h4>
-                                <p class="text-indigo-600 font-black text-[10px]">₹${item.price} ${item.is_sold ? '• SOLD' : ''}</p>
-                            </div>
+                            <div class="flex-1"><h4 class="font-black dark:text-white text-xs line-clamp-1 uppercase tracking-tighter">${item.title}</h4><p class="text-indigo-600 font-black text-[10px] uppercase">${item.category} • ₹${item.price}</p></div>
                             <button onclick="deleteItem(${item.id})" class="p-2 text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                         </div>
-                        ${!item.is_sold && interestList.length ? `
-                            <div class="mt-4 space-y-2">
-                                ${interestList.map(entry => {
-                                    const buyerName = entry.split(' (')[0];
-                                    const buyerPhone = entry.split('(')[1].replace(')', '');
-                                    return `
-                                        <div class="flex items-center justify-between bg-white dark:bg-carbonGray p-3 rounded-xl border dark:border-deepBorder">
-                                            <span class="text-[10px] font-bold dark:text-white uppercase tracking-tighter">${buyerName}</span>
-                                            <button onclick="finalizeSale(${item.id}, '${buyerPhone}')" 
-                                                class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest active:scale-95 transition-all">
-                                                Confirm Sale
-                                            </button>
-                                        </div>`;
-                                }).join('')}
-                            </div>
-                        ` : ''}
+                        ${!item.is_sold && interestList.length ? `<div class="mt-4 space-y-2">${interestList.map(entry => {
+                            const buyerPhone = entry.split('(')[1].replace(')', '');
+                            return `<div class="flex items-center justify-between bg-white dark:bg-carbonGray p-3 rounded-xl border dark:border-deepBorder"><span class="text-[10px] font-bold dark:text-white uppercase tracking-tighter">${entry.split(' (')[0]}</span><button onclick="finalizeSale(${item.id}, '${buyerPhone}')" class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-[8px] font-black uppercase tracking-widest">Confirm</button></div>`;
+                        }).join('')}</div>` : ''}
                     </div>`;
             });
 
-            // Render Purchases
-            purchasesContainer.innerHTML = myPurchases.length ? '' : '<p class="text-slate-400 text-[10px] font-bold uppercase text-center py-6 border border-dashed border-slate-200 dark:border-deepBorder rounded-3xl italic">No purchases yet</p>';
-            myPurchases.forEach(item => {
-                purchasesContainer.innerHTML += `
-                    <div class="flex items-center gap-4 bg-white dark:bg-amoledBlack p-4 rounded-3xl border dark:border-deepBorder">
-                        <img src="${item.image_url}" class="w-12 h-12 rounded-xl object-cover opacity-60">
-                        <div class="flex-1">
-                            <h4 class="font-black dark:text-white text-[10px] uppercase tracking-tighter line-clamp-1">${item.title}</h4>
-                            <p class="text-slate-400 font-bold text-[9px] uppercase tracking-widest">From Flat ${item.flat_number}</p>
-                        </div>
-                        <p class="font-black text-indigo-600 text-sm tracking-tighter">- ₹${item.price}</p>
-                    </div>`;
+            historyContainer.innerHTML = myHistory.length ? '' : '<p class="text-slate-400 text-[10px] font-bold uppercase text-center py-6 border border-dashed border-slate-200 dark:border-deepBorder rounded-3xl italic">No usage history yet</p>';
+            myHistory.forEach(item => {
+                historyContainer.innerHTML += `<div class="flex items-center gap-4 bg-white dark:bg-amoledBlack p-4 rounded-3xl border dark:border-deepBorder"><img src="${item.image_url}" class="w-12 h-12 rounded-xl object-cover opacity-60"><div class="flex-1"><h4 class="font-black dark:text-white text-[10px] uppercase tracking-tighter line-clamp-1">${item.title}</h4><p class="text-slate-400 font-bold text-[9px] uppercase tracking-widest">${item.category === 'borrow' ? 'Borrowed' : 'Bought'} from ${item.flat_number}</p></div><p class="font-black text-indigo-600 text-sm tracking-tighter">${item.category === 'borrow' ? 'FREE' : '- ₹'+item.price}</p></div>`;
             });
-
             lucide.createIcons();
         }
 
         async function finalizeSale(id, buyerPhone) {
-            if (confirm("Confirm that you've received the payment? This will update your history and the buyer's purchases.")) {
+            if (confirm("Confirm handoff? This updates history for both neighbors.")) {
                 await supabaseClient.from('listings').update({ is_sold: true, final_buyer_phone: buyerPhone }).eq('id', id);
                 await fetchListings();
                 renderDashboard();
             }
         }
 
-        // POST, DELETE, SAVE, TOGGLE (Same logic)
         async function handlePost() {
             const btn = document.getElementById('postBtn');
             const file = document.getElementById('itemFile').files[0];
@@ -294,15 +285,16 @@
             const { data: urlData } = supabaseClient.storage.from('listing-images').getPublicUrl(fileName);
             await supabaseClient.from('listings').insert([{
                 title: document.getElementById('itemTitle').value,
-                price: document.getElementById('itemPrice').value,
+                price: modalPostType === 'sell' ? document.getElementById('itemPrice').value : 0,
                 user_name: profile.name,
                 phone: profile.phone,
                 flat_number: profile.flat,
                 image_url: urlData.publicUrl,
-                is_sold: false
+                is_sold: false,
+                category: modalPostType
             }]);
             toggleSellModal(); await fetchListings();
-            btn.disabled = false; btn.innerText = "Post Listing";
+            btn.disabled = false; btn.innerText = "Confirm Post";
         }
 
         async function deleteItem(id) {
@@ -316,7 +308,7 @@
             const name = document.getElementById('setupName').value;
             const phone = document.getElementById('setupPhone').value;
             const flat = document.getElementById('setupFlat').value;
-            if (!name || !phone || !flat) return alert("Fill all fields!");
+            if (!name || !phone || !flat) return alert("All fields required!");
             profile = { name, phone, flat };
             localStorage.setItem('neighbor_profile', JSON.stringify(profile));
             document.getElementById('setupModal').classList.add('hidden');
@@ -327,7 +319,7 @@
             m.classList.toggle('hidden');
             if (!m.classList.contains('hidden')) {
                 document.getElementById('profileNameDisplay').innerText = profile.name;
-                document.getElementById('profileMetaDisplay').innerText = `Flat ${profile.flat} • ${profile.phone}`;
+                document.getElementById('profileMetaDisplay').innerText = `${profile.flat} • ${profile.phone}`;
                 renderDashboard();
             }
         }
